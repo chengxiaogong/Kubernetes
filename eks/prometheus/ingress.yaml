@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: promethues 
+  namespace: prometheus 
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # 开启use-regex,启动path的正则匹配,采用location ~来正则匹配
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+    #nginx.ingress.kubernetes.io/enable-cors: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: 域名 
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: prometheus-server 
+          servicePort: 80 
+
