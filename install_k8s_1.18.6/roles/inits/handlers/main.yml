@@ -1,0 +1,9 @@
+---
+- name: 同步系统时间
+  shell: ntpdate time.windows.com
+
+- name: 重启crond计划任务服务
+  service: name=crond state=restarted
+
+- name: 重启rsyslog服务
+  service: name=rsyslog state=restarted

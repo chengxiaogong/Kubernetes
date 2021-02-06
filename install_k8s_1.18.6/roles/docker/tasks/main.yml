@@ -1,0 +1,30 @@
+---
+# 安装docker容器
+- name: 创建临时目录
+  file: dest={{ tmp_dir }} state=directory
+
+- name: 解压Docker二进制包
+  unarchive: src={{ item }} dest={{ tmp_dir }}
+  with_fileglob:
+    - "{{ software_dir }}/docker-*.tgz"
+
+- name: 拷贝Docker二进制文件到/usr/bin
+  shell: cp -rf {{ tmp_dir }}/docker/* /usr/bin
+
+- name: 创建/etc/docker目录
+  file: dest=/etc/docker state=directory
+
+- name: 分发服务启动文件
+  copy: src=docker.service dest=/usr/lib/systemd/system
+
+- name: 分发镜像加速配置文件
+  template: src=daemon.json.j2 dest=/etc/docker/daemon.json
+
+- name: 启动Docker服务
+  systemd: name=docker state=restarted enabled=yes daemon_reload=yes
+
+- name: 查看Docker状态
+  shell: docker info
+  register: result
+
+- debug: var=result.stdout_lines

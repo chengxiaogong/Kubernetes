@@ -1,0 +1,59 @@
+---
+# 这个脚本在所有节点上都要运行
+
+- name: install libselinux-python
+  yum: name=libselinux-python state=latest
+
+- name: 推送公钥
+  copy: src=/root/.ssh/authorized_keys dest=/root/.ssh/ mode=0600
+
+- name: 关闭firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: 关闭selinux
+  lineinfile:
+    dest: /etc/sysconfig/selinux
+    regexp: '^SELINUX='
+    line: 'SELINUX=disabled'
+
+- name: 关闭swap交换分区
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '^(/.*swap.*)'
+    line: '# \1'
+    backrefs: yes
+    state: present
+
+- name: 拷贝时区 
+  copy: src=Shanghai dest=/etc/localtime
+
+- name: install ntpdate
+  yum: name=ntpdate state=present
+  notify:
+    - 同步系统时间
+    - 重启crond计划任务服务 
+    - 重启rsyslog服务
+
+- name: 添加时间自动同步到计划任务中 
+  cron: 
+    name: "时间同步"
+    minute: "*/5"
+    job: "/usr/sbin/ntpdate time.windows.com"
+
+- name: 设置主机名
+  shell: echo {{ inventory_hostname }} > /etc/hostname
+  # k8s节点和etcd节点复用了,所以主机名都统一设置为k8s节点的主机名,如果没有复用就把下面这个条件取消掉
+  when: inventory_hostname not in groups['etcd-cluster']
+
+- name: 添加hosts
+  template: src=hosts.j2 dest=/etc/hosts
+
+- name: Restart server
+  # 这会延迟服务器重启4分钟，但是这样做应该给Ansible足够的时间来关闭SSH连接本身，从而避免当前正在获取的错误。
+  command: /sbin/shutdown -r +4
+  async: 0
+  poll: 0
+  ignore_errors: true

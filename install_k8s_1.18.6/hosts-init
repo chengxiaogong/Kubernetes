@@ -1,0 +1,28 @@
+[k8s-master]
+
+k8s-master01 ansible_ssh_user=root ansible_ssh_host=192.168.31.63 ansible_ssh_pass=123456
+
+
+[k8s-node]
+k8s-node01 ansible_ssh_user=root ansible_ssh_host=192.168.31.65 ansible_ssh_pass=123456
+k8s-node02 ansible_ssh_user=root ansible_ssh_host=192.168.31.66 ansible_ssh_pass=123456
+
+
+[etcd-cluster]
+etcd-01 ansible_ssh_user=root ansible_ssh_host=192.168.31.63 ansible_ssh_pass=123456
+etcd-02 ansible_ssh_user=root ansible_ssh_host=192.168.31.65 ansible_ssh_pass=123456
+etcd-03 ansible_ssh_user=root ansible_ssh_host=192.168.31.66 ansible_ssh_pass=123456
+
+
+#[lb]
+#slb-master ansible_ssh_user=root ansible_ssh_host=192.168.31.63 ansible_ssh_pass=123456
+#slb-backup ansible_ssh_user=root ansible_ssh_host=192.168.31.71 ansible_ssh_pass=123456
+#
+#
+[newnode]
+#k8s-node03 ansible_ssh_user=root ansible_ssh_host=192.168.31.67 ansible_ssh_pass=123456
+
+
+[k8s-cluster:children]
+k8s-master
+k8s-node

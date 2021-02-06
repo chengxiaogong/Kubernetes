@@ -1,0 +1,9 @@
+---
+- name: 1.系统初始化
+  gather_facts: false
+  hosts:
+    - newnode
+  roles:
+    - inits
+  tags: inits
+

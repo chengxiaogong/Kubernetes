@@ -1,0 +1,28 @@
+[k8s-master]
+k8s-master01  ansible_ssh_host=192.168.31.63
+
+
+[k8s-node]
+k8s-node01  ansible_ssh_host=192.168.31.65
+k8s-node02  ansible_ssh_host=192.168.31.66
+
+
+[etcd-cluster]
+etcd-1  ansible_ssh_host=192.168.31.63
+etcd-2  ansible_ssh_host=192.168.31.65
+etcd-3  ansible_ssh_host=192.168.31.66
+
+
+#[lb]
+#slb-master  ansible_ssh_host=192.168.31.63
+#slb-backup  ansible_ssh_host=192.168.31.71
+#
+#
+#[newnode]
+#k8s-node03  ansible_ssh_host=192.168.31.67
+
+
+[k8s-cluster:children]
+k8s-master
+k8s-node
+

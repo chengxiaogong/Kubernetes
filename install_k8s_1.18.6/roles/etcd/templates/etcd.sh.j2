@@ -1,0 +1,20 @@
+ETCDCTL_API=3
+
+
+if [ "$1" == "write-subnet" ]
+then
+    {{ etcd_work_dir }}/bin/etcdctl \
+    --ca-file={{ etcd_work_dir }}/ssl/ca.pem \
+    --cert-file={{ etcd_work_dir }}/ssl/server.pem \
+    --key-file={{ etcd_work_dir }}/ssl/server-key.pem \
+    --endpoints="{% for host in groups['etcd-cluster'] %}https://{{ hostvars[host].ansible_ssh_host }}:2379{% if not loop.last %},{% endif %}{% endfor %}" \
+    set /coreos.com/network/config  '{"Network": "{{ pod_cidr }}", "Backend": {"Type": "vxlan"}}'
+elif [ "$1" == "cluster-health" ]
+then
+    {{ etcd_work_dir }}/bin/etcdctl \
+    --cacert={{ etcd_work_dir }}/ssl/ca.pem \
+    --cert={{ etcd_work_dir }}/ssl/server.pem \
+    --key={{ etcd_work_dir }}/ssl/server-key.pem \
+    --endpoints="{% for host in groups['etcd-cluster'] %}https://{{ hostvars[host].ansible_ssh_host }}:2379{% if not loop.last %},{% endif %}{% endfor %}" \
+    endpoint health
+fi

@@ -1,0 +1,14 @@
+---
+# 创建密钥对
+
+- name: 检查密钥对是否存在 
+  shell: ls /root/.ssh/authorized_keys 
+  ignore_errors: True
+  register: check_result
+
+- name: 创建密钥对
+  shell: ssh-keygen -t rsa -f /root/.ssh/id_rsa  -P ""
+  when: check_result is failure
+
+- name: copy id_rsa.pub to authorized_keys
+  copy: src=/root/.ssh/id_rsa.pub dest=/root/.ssh/authorized_keys 

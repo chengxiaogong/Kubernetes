@@ -1,0 +1,69 @@
+# 定义全局组变量
+
+# 相关软件包的存放路径
+software_dir: '/root/binary_package'
+# k8s 安装目录
+k8s_work_dir: '/opt/kubernetes'
+# etcd 安装目录
+etcd_work_dir: '/opt/etcd'
+# etcd 数据存放目录
+etcd_data_dir: '/var/lib/etcd/default.etcd'
+# 临时存储目录
+tmp_dir: '/tmp/k8s'
+
+# 集群网络
+service_cidr: '10.0.0.0/24'
+cluster_dns: '10.0.0.2'   # 与roles/addons/files/coredns.yaml中IP一致，并且是service_cidr中的IP
+pod_cidr: '10.244.0.0/16' # 与roles/addons/files/kube-flannel.yaml中网段一致
+service_nodeport_range: '30000-32767'
+cluster_domain: 'cluster.local'
+token: '33ec33d00a6a5e5d35ec0478321a0545'  # 可通过head -c 16 /dev/urandom | od -An -t x | tr -d ' ' 生成
+
+# 高可用，如果部署单Master，该项忽略
+vip: '192.168.31.88'
+nic: 'ens32'  # 网卡名称
+
+
+# docker镜像加速地址
+public_mirror_image: 'https://b9pmyelo.mirror.aliyuncs.com'
+# 私有镜像地址, 如 harbor
+private_mirror_image: '192.168.31.70'
+
+# 自签证书可信任IP列表，为方便扩展，可添加多个预留IP
+cert_hosts:
+  # 包含所有LB、VIP、Master IP和service_cidr的第一个IP
+  k8s:
+    - 10.0.0.1
+    - 192.168.31.61
+    - 192.168.31.62
+    - 192.168.31.63
+    - 192.168.31.64
+    - 192.168.31.65
+    - 192.168.31.66
+    - 192.168.31.67
+    - 192.168.31.68
+    - 192.168.31.69
+    - 192.168.31.70
+    - 192.168.31.71
+    - 192.168.31.72
+    - 192.168.31.73
+    - 192.168.31.74
+    - 192.168.31.75
+    - 192.168.31.76
+    - 192.168.31.77
+    - 192.168.31.78
+    - 192.168.31.79
+    - 192.168.31.80
+    - 192.168.31.81
+    - 192.168.31.82
+    - 192.168.31.83
+    - 192.168.31.84
+    - 192.168.31.85
+    - 192.168.31.86
+    - 192.168.31.87
+    - 192.168.31.88
+  # 包含所有etcd节点IP
+  etcd:
+    - 192.168.31.63
+    - 192.168.31.65
+    - 192.168.31.66

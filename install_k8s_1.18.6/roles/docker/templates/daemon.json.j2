@@ -1,0 +1,9 @@
+{
+  "registry-mirrors": ["{{ public_mirror_image }}"],
+  "insecure-registries": ["{{ private_mirror_image }}"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}

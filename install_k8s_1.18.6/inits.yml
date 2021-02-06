@@ -1,0 +1,14 @@
+---
+- name: 0.生成密钥对
+  gather_facts: false
+  hosts: localhost
+  roles:
+    - keys
+  tags: keys
+
+- name: 1.系统初始化
+  gather_facts: false
+  hosts: all
+  roles:
+    - inits 
+  tags: inits

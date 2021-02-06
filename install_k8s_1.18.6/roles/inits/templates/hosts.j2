@@ -1,0 +1,7 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+# 添加k8s 集群内网解析
+{% for item in groups['k8s-cluster'] %}
+{{ hostvars[item].ansible_ssh_host }}      {{ hostvars[item].inventory_hostname }}
+{% endfor %}

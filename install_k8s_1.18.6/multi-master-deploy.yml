@@ -1,0 +1,56 @@
+---
+# 部署高可用版 kubernetes 集群,具有多个master 节点,多个Node节点
+
+- name: 1.自签证书
+  gather_facts: false
+  hosts: localhost
+  roles:
+    - tls
+  tags: tls
+
+- name: 2.安装Docker
+  gather_facts: false
+  hosts:
+    - k8s-cluster
+  roles:
+    - docker
+  tags: docker
+
+- name: 3.部署ETCD集群
+  gather_facts: false
+  hosts:
+    - etcd-cluster
+  roles:
+    - etcd
+  tags: etcd
+
+- name: 4.部署K8S Master
+  gather_facts: false
+  hosts:
+    - k8s-master
+  roles:
+    - master
+  tags: k8s-master
+
+- name: 5. 部署Nginx负载均衡并高可用
+  gather_facts: false
+  hosts: lb
+  roles:
+    - ha
+  tags: ha
+
+- name: 6.部署K8S Node节点
+  gather_facts: false
+  hosts:
+    - k8s-node
+  roles:
+    - node
+  tags: k8s-node
+
+- name: 7.部署K8S 插件
+  gather_facts: false
+  hosts:
+    - k8s-master
+  roles:
+    - addons
+  tags: addons
