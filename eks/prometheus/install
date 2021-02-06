@@ -10,9 +10,9 @@ helm install prometheus prometheus-community/prometheus \
     --namespace prometheus \
     --set alertmanager.persistentVolume.storageClass="managed-ebs-storage",server.persistentVolume.storageClass="managed-ebs-storage"
 
-starunion@aws-us-west-eks-manager-prod-01:~/yaml/prometheus$ helm install prometheus prometheus-community/prometheus \
->     --namespace prometheus \
->     --set alertmanager.persistentVolume.storageClass="managed-ebs-storage",server.persistentVolume.storageClass="managed-ebs-storage"
+helm install prometheus prometheus-community/prometheus \
+--namespace prometheus \
+--set alertmanager.persistentVolume.storageClass="managed-ebs-storage",server.persistentVolume.storageClass="managed-ebs-storage"
 WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/starunion/.kube/config
 WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /home/starunion/.kube/config
 NAME: prometheus
